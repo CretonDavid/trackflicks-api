@@ -2,10 +2,12 @@ package com.studio.trackflicks.utils;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 import java.util.Objects;
 
+@Service
 public class GeneralMessageAccessor {
 
     private final MessageSource messageSource;
