@@ -20,6 +20,7 @@
         <maven.compiler.proc>full</maven.compiler.proc>
         <postgresql.version>42.7.5</postgresql.version>
         <lombok.version>1.18.36</lombok.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
         <jsonwebtoken.version>0.12.6</jsonwebtoken.version>
         <junit.version>5.11.4</junit.version>
         <mockito.version>5.15.2</mockito.version>
@@ -89,6 +90,17 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${jsonwebtoken.version}</version>
+        </dependency>
+        <!-- MapStruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
         <!-- Junit 5 -->
         <dependency>
