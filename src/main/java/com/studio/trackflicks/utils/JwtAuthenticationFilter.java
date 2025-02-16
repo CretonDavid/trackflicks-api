@@ -1,7 +1,7 @@
 package com.studio.trackflicks.utils;
 
 import com.studio.trackflicks.repository.TokenRepository;
-import com.studio.trackflicks.service.JwtService;
+import com.studio.trackflicks.service.auth.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

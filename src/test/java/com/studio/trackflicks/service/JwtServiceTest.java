@@ -2,6 +2,7 @@ package com.studio.trackflicks.service;
 
 import com.studio.trackflicks.model.Role;
 import com.studio.trackflicks.model.User;
+import com.studio.trackflicks.service.auth.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.WeakKeyException;
 import org.junit.jupiter.api.BeforeEach;

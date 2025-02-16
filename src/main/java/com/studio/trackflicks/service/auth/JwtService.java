@@ -1,4 +1,4 @@
-package com.studio.trackflicks.service;
+package com.studio.trackflicks.service.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

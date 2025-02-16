@@ -11,7 +11,6 @@ import com.studio.trackflicks.model.TokenType;
 import com.studio.trackflicks.model.User;
 import com.studio.trackflicks.repository.TokenRepository;
 import com.studio.trackflicks.repository.UserRepository;
-import com.studio.trackflicks.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
