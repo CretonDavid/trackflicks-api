@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studio.trackflicks.dto.auth.AuthenticationResponse;
 import com.studio.trackflicks.dto.auth.LoginRequest;
 import com.studio.trackflicks.dto.auth.RegisterRequest;
+import com.studio.trackflicks.exception.auth.EmailAlreadyExist;
+import com.studio.trackflicks.exception.auth.UserNotFoundException;
 import com.studio.trackflicks.mapper.UserMapper;
 import com.studio.trackflicks.model.Role;
 import com.studio.trackflicks.model.Token;
@@ -11,6 +13,8 @@ import com.studio.trackflicks.model.TokenType;
 import com.studio.trackflicks.model.User;
 import com.studio.trackflicks.repository.TokenRepository;
 import com.studio.trackflicks.repository.UserRepository;
+import com.studio.trackflicks.utils.ExceptionMessageAccessor;
+import com.studio.trackflicks.validation.UserValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +32,29 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private static final String EMAIL_ALREADY_EXISTS = "email.already.exist";
+
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserValidator userValidator;
+    private final EmailVerificationService emailVerificationService;
+    private final ExceptionMessageAccessor exceptionMessageAccessor;
 
     public void register(RegisterRequest request) {
+
+        userValidator.validateEmailPattern(request.getEmail());
+        final boolean existsByEmail = userRepository.existsByEmail(request.getEmail());
+        if (existsByEmail) {
+            log.warn("{} is already being used!", request.getEmail());
+
+            final String existsEmail = exceptionMessageAccessor.getMessage(null, EMAIL_ALREADY_EXISTS);
+            throw new EmailAlreadyExist(existsEmail);
+        }
+        userValidator.validateUsernamePattern(request.getUsername());
+        userValidator.validatePasswordPattern(request.getPassword());
 
         final User user = UserMapper.INSTANCE.convertToUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -42,16 +62,28 @@ public class AuthenticationService {
 
         User savedUser = userRepository.save(user);
         log.debug("A new user has been created with email : {}", user.getEmail());
+
+        emailVerificationService.createVerification(savedUser);
+    }
+
+    public void verifyEmail(String verificationCode, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user.isLocked()) {
+            user = emailVerificationService.verify(verificationCode);
+            userRepository.save(user);
+        } else {
+            throw new UserNotFoundException("Email already verified");
+        }
     }
 
 
     public AuthenticationResponse login(LoginRequest request) {
 
-        final String username = request.getEmail();
-        final String password = request.getPassword();
+        userValidator.validateEmailPattern(request.getEmail());
 
-        final UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        final var authenticationTokenToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+        authenticationManager.authenticate(authenticationTokenToken);
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();

@@ -1,6 +1,7 @@
 package com.studio.trackflicks.controller;
 
 import com.studio.trackflicks.dto.auth.AuthenticationResponse;
+import com.studio.trackflicks.dto.auth.EmailVerificationRequest;
 import com.studio.trackflicks.dto.auth.LoginRequest;
 import com.studio.trackflicks.dto.auth.RegisterRequest;
 import com.studio.trackflicks.service.auth.AuthenticationService;
@@ -28,6 +29,12 @@ public class AuthenticationController {
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest request) {
         authenticationService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<Void> activateAccount(@RequestBody EmailVerificationRequest request) {
+        authenticationService.verifyEmail(request.getVerificationCode(), request.getUserId());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/login")
