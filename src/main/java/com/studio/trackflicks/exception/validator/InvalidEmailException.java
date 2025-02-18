@@ -1,4 +1,4 @@
-package com.studio.trackflicks.exception.validation;
+package com.studio.trackflicks.exception.validator;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
