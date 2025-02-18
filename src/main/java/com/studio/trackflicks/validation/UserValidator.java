@@ -1,8 +1,8 @@
 package com.studio.trackflicks.validation;
 
-import com.studio.trackflicks.exception.validation.InvalidEmailException;
-import com.studio.trackflicks.exception.validation.InvalidPasswordException;
-import com.studio.trackflicks.exception.validation.InvalidUsernameException;
+import com.studio.trackflicks.exception.validator.InvalidEmailException;
+import com.studio.trackflicks.exception.validator.InvalidPasswordException;
+import com.studio.trackflicks.exception.validator.InvalidUsernameException;
 import com.studio.trackflicks.utils.ExceptionMessageAccessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

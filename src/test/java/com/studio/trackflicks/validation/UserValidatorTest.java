@@ -1,11 +1,9 @@
 package com.studio.trackflicks.validation;
 
-import com.studio.trackflicks.exception.validation.InvalidEmailException;
-import com.studio.trackflicks.exception.validation.InvalidPasswordException;
-import com.studio.trackflicks.exception.validation.InvalidUsernameException;
-import com.studio.trackflicks.service.auth.JwtService;
+import com.studio.trackflicks.exception.validator.InvalidEmailException;
+import com.studio.trackflicks.exception.validator.InvalidPasswordException;
+import com.studio.trackflicks.exception.validator.InvalidUsernameException;
 import com.studio.trackflicks.utils.ExceptionMessageAccessor;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
